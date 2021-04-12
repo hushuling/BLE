@@ -1,0 +1,100 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    xmlns:tools="http://schemas.android.com/tools"
+4    package="com.xiekang.bluetooths2"
+5    android:versionCode="1"
+6    android:versionName="1.0" >
+7
+8    <uses-sdk
+9        android:minSdkVersion="19"
+9-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+10        android:targetSdkVersion="26" />
+10-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+11
+12    <uses-permission android:name="android.permission.BLUETOOTH" />
+12-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:6:3-66
+12-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:6:20-63
+13    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+13-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:7:3-72
+13-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:7:20-69
+14    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+14-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:8:3-79
+14-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:8:20-76
+15    <uses-permission
+15-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:9:3-11:43
+16        android:name="android.permission.BLUETOOTH_PRIVILEGED"
+16-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:10:5-59
+17        tools:ignore="ProtectedPermissions" />
+17-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:11:5-40
+18    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+18-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:12:3-74
+18-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:12:20-71
+19    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+19-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:13:3-77
+19-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:13:20-74
+20    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+20-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:14:3-74
+20-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:14:20-71
+21    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+21-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:15:3-79
+21-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:15:20-76
+22    <uses-permission
+22-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:16:3-18:43
+23        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+23-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:17:5-64
+24        tools:ignore="ProtectedPermissions" />
+24-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:18:5-40
+25    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 经典蓝牙一样，应用使用蓝牙，需要声明BLUETOOTH权限，如果需要扫描设备或者操作蓝牙设置，则还需要BLUETOOTH_ADMIN权限 -->
+25-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:19:3-77
+25-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:19:20-74
+26    <uses-permission android:name="android.permission.INTERNET" />
+26-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:20:3-65
+26-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:20:20-62
+27    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+27-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:21:3-82
+27-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:21:20-79
+28    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+28-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:22:3-78
+28-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:22:20-75
+29    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+29-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:23:3-79
+29-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:23:20-76
+30    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+30-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:24:3-77
+30-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:24:20-74
+31
+32    <uses-feature
+32-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:26:3-28:31
+33        android:name="android.hardware.bluetooth_le"
+33-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:27:5-49
+34        android:required="true" />
+34-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:28:5-28
+35
+36    <application>
+36-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:29:3-43:17
+37
+38        <!-- 全局Context提供者 -->
+39        <provider
+39-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:32:5-35:34
+40            android:name="com.xiekang.bluetooths.utlis.ApplicationContextProvider"
+40-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:33:7-77
+41            android:authorities="contextprovider"
+41-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:34:7-44
+42            android:exported="false" />
+42-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:35:7-31
+43
+44        <service
+44-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:37:5-39:32
+45            android:name="com.xiekang.bluetooths.bluetooths.oxgen.BluetoothLeService"
+45-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:38:7-80
+46            android:enabled="true" />
+46-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:39:7-29
+47        <service
+47-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:40:5-42:32
+48            android:name="com.xiekang.bluetooths.bluetooths.bloopress.BluetoothLeService"
+48-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:41:7-84
+49            android:enabled="true" />
+49-->I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:42:7-29
+50    </application>
+51
+52</manifest>

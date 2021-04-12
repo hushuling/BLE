@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "I:\\bluetooths\\bluetoothslibrary\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_action.xml",
+        "source": "C:\\Users\\hsl20\\.gradle\\caches\\transforms-2\\files-2.1\\acedb5a439482afea3702661a6a2cc74\\support-compat-26.1.0\\res\\layout-v21\\notification_action.xml"
+    },
+    {
+        "merged": "I:\\bluetooths\\bluetoothslibrary\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_template_custom_big.xml",
+        "source": "C:\\Users\\hsl20\\.gradle\\caches\\transforms-2\\files-2.1\\acedb5a439482afea3702661a6a2cc74\\support-compat-26.1.0\\res\\layout-v21\\notification_template_custom_big.xml"
+    },
+    {
+        "merged": "I:\\bluetooths\\bluetoothslibrary\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\hsl20\\.gradle\\caches\\transforms-2\\files-2.1\\acedb5a439482afea3702661a6a2cc74\\support-compat-26.1.0\\res\\layout-v21\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "I:\\bluetooths\\bluetoothslibrary\\build\\intermediates\\res\\merged\\release\\layout-v21\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\hsl20\\.gradle\\caches\\transforms-2\\files-2.1\\acedb5a439482afea3702661a6a2cc74\\support-compat-26.1.0\\res\\layout-v21\\notification_action_tombstone.xml"
+    }
+]

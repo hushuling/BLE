@@ -1,0 +1,131 @@
+-- Merging decision tree log ---
+manifest
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:2:1-45:12
+	package
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:4:3-36
+		INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+		INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:2:1-45:12
+		INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:3:3-49
+	android:versionCode
+		INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:2:1-45:12
+		INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.BLUETOOTH
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:6:3-66
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:6:20-63
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:7:3-72
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:7:20-69
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:8:3-79
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:8:20-76
+uses-permission#android.permission.BLUETOOTH_PRIVILEGED
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:9:3-11:43
+	tools:ignore
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:11:5-40
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:10:5-59
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:12:3-74
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:12:20-71
+uses-permission#android.permission.CHANGE_NETWORK_STATE
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:13:3-77
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:13:20-74
+uses-permission#android.permission.CHANGE_WIFI_STATE
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:14:3-74
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:14:20-71
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:15:3-79
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:15:20-76
+uses-permission#android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:16:3-18:43
+	tools:ignore
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:18:5-40
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:17:5-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:19:3-77
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:19:20-74
+uses-permission#android.permission.INTERNET
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:20:3-65
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:20:20-62
+uses-permission#android.permission.KILL_BACKGROUND_PROCESSES
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:21:3-82
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:21:20-79
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:22:3-78
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:22:20-75
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:23:3-79
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:23:20-76
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:24:3-77
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:24:20-74
+uses-feature#android.hardware.bluetooth_le
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:26:3-28:31
+	android:required
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:28:5-28
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:27:5-49
+application
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:29:3-43:17
+provider#com.xiekang.bluetooths.utlis.ApplicationContextProvider
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:32:5-35:34
+	android:authorities
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:34:7-44
+	android:exported
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:35:7-31
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:33:7-77
+service#com.xiekang.bluetooths.bluetooths.oxgen.BluetoothLeService
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:37:5-39:32
+	android:enabled
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:39:7-29
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:38:7-80
+service#com.xiekang.bluetooths.bluetooths.bloopress.BluetoothLeService
+ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:40:5-42:32
+	android:enabled
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:42:7-29
+	android:name
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml:41:7-84
+uses-sdk
+INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+		INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+		ADDED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
+		INJECTED from I:\bluetooths\bluetoothslibrary\src\main\AndroidManifest.xml
