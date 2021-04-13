@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
+import android.text.TextUtils;
 
 import com.xiekang.bluetooths.interfaces.GetTemperature;
 import com.xiekang.bluetooths.interfaces.Getbloodsuar;
@@ -117,8 +118,14 @@ public class Sugar_OxygenUtlis {
         if (head>=0&&last>=0){
          String hexsting= HexUtil.hexStringToString(vlaue.substring(head,last));
           LogUtils.e("解析数据"+ hexsting+"vlaue.substring(head,last)"+vlaue.substring(head,last));
-         String oxgen = hexsting.substring(hexsting.indexOf("Hemoglobin:")+("Hemoglobin:").length(), hexsting.indexOf("g/L"));
-         if (getbloodsuar!=null)getbloodsuar.getbloodsugar(Float.parseFloat(oxgen));
+          String oxgen=null;
+          if (hexsting.contains("Hemoglobin:")){
+            oxgen = hexsting.substring(hexsting.indexOf("Hemoglobin:")+("Hemoglobin:").length(), hexsting.indexOf("g/L"));
+          }else {
+            oxgen = hexsting.substring(hexsting.indexOf("Control:")+("Control:").length(), hexsting.indexOf("g/L"));
+          }
+
+         if (getbloodsuar!=null&& !TextUtils.isEmpty(oxgen))getbloodsuar.getbloodsugar(Float.parseFloat(oxgen));
           UnRegisterReceiver();
         }
 
