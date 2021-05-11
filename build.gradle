@@ -52,7 +52,7 @@ dependencies {
     //红象 呼吸家
     implementation files('libs\\BreathHome-BLE-1.03-only.jar')
     //沃莱腰围尺
-    api files('libs\\ICDeviceManager.aar')
+    provided   files('libs\\ICDeviceManager.aar')
 
 
 
