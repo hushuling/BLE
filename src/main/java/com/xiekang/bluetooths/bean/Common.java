@@ -1,43 +1,18 @@
-package com.xiekang.bluetooths.utlis;
+package com.xiekang.bluetooths.bean;
+
+import com.xiekang.bluetooths.utlis.DateUtil;
 
 /**
  * Created by Administrator on 2017/3/9 0009.
  */
 
 public class Common {
-
-  /*当前版本*/
-  public static  final String VERSION ="v1.0/";
-
-  /**
-   * MD5自定义KEY
-   **/
-  public static final String MD5_VALUE_KEY = "9ol.)P:?3edc$RFV5tgb";
-  /**
-   * 激活加密MD5自定义key
-   */
-  public static final String REGIATER_KEY = "q1azw2sxe3dcr4fv!@#$%%^";
-
-
-  /**
-   * 应用目录名称
-   */
-  public static final String APP_DIR = "/MedicalFollowUp";
-  /**
-   * 版本下载本地路径
-   */
-  public static final String APP_VERSION_DIR = APP_DIR + "/version";
-
-
- public static final String Crash_Text = "/"+ DateUtil.getDate() + ".txt";
- public static final String Crash = "/Crash";
-
-/*  爱奥乐血压设备  设备蓝牙地址 蓝牙名称*/
+/* 爱奥乐血压设备  设备蓝牙地址 蓝牙名称*/
   public static final String Bioland_BPM ="Bioland-BPM";
  /* 艾康血糖 设备蓝牙地址 蓝牙名称*/
   public static final String OGM = "OGM";
 /*体温设备 蓝牙地址 蓝牙名称*/
-  public static final String Bluetooth_BP="Bluetooth BP";
+  public static final String TD133 ="Bluetooth BP";
 /*轻牛 体脂秤*/
   public static final String QN_Scale="QN-Scale";
 /*科瑞康 血氧夹*/
@@ -58,11 +33,21 @@ public class Common {
   public static final String iGate ="iGate";
   /*艾康血红蛋白设备  设备蓝牙地址 蓝牙名称*/
   public static final String AlKAN ="AIKAN-01";
+  //读卡器
+  public static final String Mr5 ="MR5 SE-213000028";
+  //鼎恒身高体重
+  public static final String DH ="DH";
+  //中控智慧 身份证读卡器 蓝牙地址 蓝牙名称
+  public static final String iDR210="ID300";
+  //呼吸家 标识（没有固定的蓝牙名称，具体查看设备后的IMEI号）
+  public static final String Breath="A1";
+  //沃莱腰围尺
+  public static final String Icomon="icomon";
 /*蓝牙搜索超时*/
   public static long searchtimeout =10000;
 /*蓝牙连接超时*/
   public static long connecttimeout =5000;
-/*成功状态码*/
-  public static final int Statu=200;
+  public static final String B0 = "B0"; // 腰围
+  public static final String B2 = "B2"; //  臀围
 
 }

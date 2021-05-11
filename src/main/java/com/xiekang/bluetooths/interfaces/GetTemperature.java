@@ -10,12 +10,12 @@ package com.xiekang.bluetooths.interfaces;
  * @修改时间 time
  * @修改备注 describe
  */
-public interface GetTemperature extends Bluetooth_Satus{
+public interface GetTemperature extends Bluetooth_Satus {
   /**
    *
    * @param temp 体温数值
    */
-  void getbloodfat(String temp);
+  void getTempter(String temp);
 
   /**
    *

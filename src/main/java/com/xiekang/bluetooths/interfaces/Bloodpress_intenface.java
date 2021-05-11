@@ -1,6 +1,4 @@
-package com.xiekang.bluetooths.bluetooths.bloopress;
-
-import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
+package com.xiekang.bluetooths.interfaces;
 
 /**
  * @项目名称 MedicalFollowUp

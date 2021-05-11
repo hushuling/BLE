@@ -10,6 +10,6 @@ package com.xiekang.bluetooths.interfaces;
  * @修改时间 time
  * @修改备注 describe
  */
-public interface GetBloodfat extends Bluetooth_Satus{
+public interface GetBloodfat extends Bluetooth_Satus {
   void getbloodfat(float chlo, float trig, float hdl, float ldl);
 }

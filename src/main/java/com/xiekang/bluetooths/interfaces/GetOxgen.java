@@ -10,7 +10,7 @@ package com.xiekang.bluetooths.interfaces;
  * @修改时间 time
  * @修改备注 describe
  */
-public interface GetOxgen<T> extends Bluetooth_Satus{
+public interface GetOxgen<T> extends Bluetooth_Satus {
   /**
    *
    * @param spo2 血氧饱和度值。单位为%。0 为无效值。如果 nSpO 为 98，则血氧饱和

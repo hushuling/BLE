@@ -10,13 +10,20 @@ android {
         javaCompileOptions {
             annotationProcessorOptions { includeCompileClasspath = true }
         }
+        ndk {
+            //选择要添加的对应cpu类型的.so库 不能添加arm64-v8a 不然x5内核加载不上去
+            abiFilters  "armeabi"  //, "x86", "x86_64"
+        }
+
+
     }
     lintOptions {
         abortOnError false
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true      //开启混淆
+            zipAlignEnabled true    // 开启Zip压缩优化
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -26,20 +33,27 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    //轻牛蓝牙体脂秤
-    api  ('com.github.YolandaQingniu:qnscalesdk:2.3.11'){
-        exclude module: "support-v4"//防止和module引用的v4资源版本不同
-    }
-    //乐普血脂
-    implementation files('libs\\LPLibrary-1.0.jar')
-    //康泰血氧
-    implementation files('libs\\contec_spo2_ble_sdk_v1.7.jar')
-    //康泰尿液
-    implementation files('libs\\contec_bc_ble_sdk_v1.3.jar')
-    //科瑞康血氧仪
-    api files('libs\\CreativeHealth_pod_pc300.jar')
     implementation 'com.android.support:support-annotations:28.0.0'
     implementation 'com.android.support:support-compat:26.1.0'
+    //轻牛蓝牙体脂秤
+    api  files('libs\\qnsdk-2.3.11.jar')
+   //乐普血脂
+    api files('libs\\LPLibrary-1.0.jar')
+    //康泰血氧
+    api files('libs\\contec_spo2_ble_sdk_v1.7.jar')
+    //康泰尿液
+    api files('libs\\contec_bc_ble_sdk_v1.3.jar')
+    //科瑞康血氧仪
+    api files('libs\\CreativeHealth_pod_pc300.jar')
+    //蓝牙读卡器
+    implementation files('libs\\mpaylib_v1.7.jar')
+    //中控身份证蓝牙读卡器
+    implementation files('libs\\zkandroidid3xx.jar')
+    //红象 呼吸家
+    implementation files('libs\\BreathHome-BLE-1.03-only.jar')
+    //沃莱腰围尺
+    api files('libs\\ICDeviceManager.aar')
+
 
 
 }

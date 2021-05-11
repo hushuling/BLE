@@ -8,10 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 
+import com.xiekang.bluetooths.bean.BloodpressDate;
+import com.xiekang.bluetooths.interfaces.Bloodpress_intenface;
+import com.xiekang.bluetooths.BluetoothDriver;
+import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
 import com.xiekang.bluetooths.utlis.ContextProvider;
 import com.xiekang.bluetooths.utlis.HexUtil;
 import com.xiekang.bluetooths.utlis.LogUtils;
@@ -33,7 +36,7 @@ import static android.content.Context.BIND_AUTO_CREATE;
  * @修改时间 time
  * @修改备注 describe
  */
-public class Bloodpress_Bluetooth_Utlis {
+public class Bloodpress_Bluetooth_Utlis  implements BluetoothDriver<Bloodpress_intenface> {
   private static Bloodpress_Bluetooth_Utlis bloodpress_bluetooth_utlis;
 
   private Bloodpress_intenface mbluetoothsatus;
@@ -73,7 +76,7 @@ public class Bloodpress_Bluetooth_Utlis {
   private boolean isBingd;
   private Intent intent;
 
-
+  private Bluetooth_Satus satus;
 
   private Bloodpress_Bluetooth_Utlis() {
     commands = new Commands();
@@ -101,8 +104,9 @@ public class Bloodpress_Bluetooth_Utlis {
    *
    * @param
    */
-  public void connect(BluetoothDevice bluetoothDevice, Bloodpress_intenface bluetooth_satus) {
+  public void Connect(BluetoothDevice bluetoothDevice, Bloodpress_intenface bluetooth_satus, Bluetooth_Satus satus) {
       LogUtils.e("连接中****");
+    this.satus=satus;
       RegisterReceiver(bluetooth_satus);
       mDeviceAddress=bluetoothDevice.getAddress();
       Intent gattServiceIntent = new Intent(ContextProvider.get().getContext(), BluetoothLeService.class);
@@ -136,6 +140,7 @@ public class Bloodpress_Bluetooth_Utlis {
       if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
         LogUtils.e("连接成功*******");
         if (mbluetoothsatus!=null)mbluetoothsatus.succed();
+        if (satus!=null)satus.succed();
         CommandType = HANDSHAKE_PACKET;
         mHandler.postDelayed(mRunnable, 1000);// 连接后延时1秒发“0xOB,0xOA”
 
@@ -257,7 +262,7 @@ public class Bloodpress_Bluetooth_Utlis {
                   + (Data[11] & 0xff) + "/" + Data[12] + "("
                   + times + ")";
               LogUtils.e("测量结果-----------------------------"+resultBG);
-              if (mbluetoothsatus!=null)mbluetoothsatus.getDate(new Info(getShort(Data, 9)+"" ,Data[12]+"",(Data[11] & 0xff)+""));
+              if (mbluetoothsatus!=null)mbluetoothsatus.getDate(new BloodpressDate(getShort(Data, 9)+"" ,Data[12]+"",(Data[11] & 0xff)+""));
               CommandType = ACK_PACKE;
               mHandler.postDelayed(mRunnable, 300);
 //
@@ -351,38 +356,6 @@ public class Bloodpress_Bluetooth_Utlis {
     bloodsugar.add(nf.format(resultValue));
     // displayTransformationData(nf.format(resultValue) + "mmol");
 
-  }
-  public static class Info{
-    String dbp;
-    String sbp;
-    String rhp;
-
-    @Override
-    public String toString() {
-      return "Info{" +
-          "dbp='" + dbp + '\'' +
-          ", sbp='" + sbp + '\'' +
-          ", rhp='" + rhp + '\'' +
-          '}';
-    }
-
-    public String getDbp() {
-      return dbp;
-    }
-
-    public String getSbp() {
-      return sbp;
-    }
-
-    public String getRhp() {
-      return rhp;
-    }
-
-    public Info(String sbp, String rhp, String dbp) {
-      this.dbp = dbp;
-      this.sbp = sbp;
-      this.rhp = rhp;
-    }
   }
   private Runnable mRunnable = new Runnable() {
     @Override
@@ -478,6 +451,7 @@ public class Bloodpress_Bluetooth_Utlis {
 
   public void UnRegisterReceiver() {
     if (mbluetoothsatus!=null)mbluetoothsatus.err();
+    if (satus!=null)satus.err();
   if (isBingd) ContextProvider.get().getContext().unbindService(mServiceConnection);
    if (intent!=null)ContextProvider.get().getContext().unregisterReceiver(mGattUpdateReceiver);
     isBingd=false;

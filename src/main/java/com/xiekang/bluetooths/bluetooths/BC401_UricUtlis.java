@@ -10,6 +10,8 @@ import com.contec.bc.code.bean.ContecBluetoothType;
 import com.contec.bc.code.callback.CommunicateCallback;
 import com.contec.bc.code.connect.ContecSdk;
 import com.xiekang.bluetooths.bean.NewUIData;
+import com.xiekang.bluetooths.BluetoothDriver;
+import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
 import com.xiekang.bluetooths.interfaces.GetUriDate;
 import com.xiekang.bluetooths.interfaces.TimerListener;
 import com.xiekang.bluetooths.utlis.ContextProvider;
@@ -38,10 +40,11 @@ import static com.xiekang.bluetooths.bluetooths.BltManager.BLUE_TOOTH_CLEAR;
  * @修改时间 time
  * @修改备注 describe
  */
-public class BC401_UricUtlis {
+public class BC401_UricUtlis implements BluetoothDriver<GetUriDate> {
   private static BC401_UricUtlis bc401_uricUtlis;
   private String TAG = "BC401_UricUtlis";
   private GetUriDate geturidate;
+  private Bluetooth_Satus satus;
   private boolean isConnect=false;
   private static ContecSdk sdk;
   public static BC401_UricUtlis getInstance() {
@@ -52,8 +55,9 @@ public class BC401_UricUtlis {
   }
   private BC401_UricUtlis() {
   }
-  public void  judgeconnect(BluetoothDevice device, GetUriDate bluetooth_satus ){
-    RegisterReceiver(bluetooth_satus);
+  public void  Connect(BluetoothDevice device, GetUriDate uriDate, Bluetooth_Satus bluetoothSatus){
+    RegisterReceiver(uriDate);
+    this.satus=bluetoothSatus;
     if (device.getType() == DEVICE_TYPE_LE) {
       sdk = new ContecSdk();
       //初始化蓝牙模块
@@ -119,7 +123,7 @@ public class BC401_UricUtlis {
           uiData.setCRE(CR);
           uiData.setUCA(UCA);
           if (isConnect){
-            geturidate.getBodyfat(uiData);
+            geturidate.getUri(uiData);
           }
           isConnect=false;
           LogUtils.e(TAG, "Date = " + date);
@@ -137,7 +141,7 @@ public class BC401_UricUtlis {
           LogUtils.e(TAG, "CR = " + CR);
           LogUtils.e(TAG, "UCA = " + UCA);
           UnRegisterReceiver();
-         // sdk.stopCommunicate();
+          // sdk.stopCommunicate();
         }
       } catch (JSONException e) {
         e.printStackTrace();
@@ -155,6 +159,7 @@ public class BC401_UricUtlis {
     @Override
     public void onCommunicateProgress(int status) {
       if (geturidate!=null&&status==1)geturidate.succed();
+      if (satus!=null&&status==1)satus.succed();
       LogUtils.e(TAG, "status  = " + status);
     }
   };
@@ -164,7 +169,7 @@ public class BC401_UricUtlis {
    *
    * @param
    */
-  public void connect(final BluetoothDevice bluetoothDevice) {
+  private void connect(final BluetoothDevice bluetoothDevice) {
 
     //链接的操作应该在子线程
     new Thread(new Runnable() {
@@ -187,55 +192,56 @@ public class BC401_UricUtlis {
       switch (msg.what) {
         case 4://已连接某个设备
           if (geturidate!=null)geturidate.succed();
-            try {
-              final int count = 0;
-              final byte[] vlaue = new byte[64];
-              byte[] oneTrans = new byte[]{-109, -114, 4, 0, 9, 4, 17};
-              ReadTaskTimer.getInstance().setTimerListener(new TimerListener() {
-                @Override
-                public void onTimer() {
-                  if (count % 20 == 0) {
-                    LogUtils.e(this.getClass().getName() + "finally**");
-                    InputStream inputStream = null;
-                    int len = 0;
-                    try {
-                      inputStream =  BC401_UricUtlis.getInstance().getmBluetoothSocket().getInputStream();
-                      len = inputStream.read(vlaue);
-                      byte[] dates = new byte[len];
-                      if (len > 0) {
-                        for (int i = 0; i < len; i++) {
-                          Verifier.getInstance().addByte(Byte.valueOf(vlaue[i]));
-                          dates[i] = vlaue[i];
-                        }
-                        LogUtils.e(" ReceiveSocketService", HexUtil.encodeHexStr(dates) + "***********len*******" + len);
-                        if (Verifier.getInstance().getByte().size() > 20) {
-                          NewUIData analyse = Verifier.getInstance().analyse();
-                          if (analyse != null) {
-                            Verifier.getInstance().clear();
-                            if (geturidate!=null)geturidate.getBodyfat(analyse);
-                            ReadTaskTimer.getInstance().stopReadTask();
-                            UnRegisterReceiver();
-                          }
-
-                        }
+          if (satus!=null)satus.succed();
+          try {
+            final int count = 0;
+            final byte[] vlaue = new byte[64];
+            byte[] oneTrans = new byte[]{-109, -114, 4, 0, 9, 4, 17};
+            ReadTaskTimer.getInstance().setTimerListener(new TimerListener() {
+              @Override
+              public void onTimer() {
+                if (count % 20 == 0) {
+                  LogUtils.e(this.getClass().getName() + "finally**");
+                  InputStream inputStream = null;
+                  int len = 0;
+                  try {
+                    inputStream =  BC401_UricUtlis.getInstance().getmBluetoothSocket().getInputStream();
+                    len = inputStream.read(vlaue);
+                    byte[] dates = new byte[len];
+                    if (len > 0) {
+                      for (int i = 0; i < len; i++) {
+                        Verifier.getInstance().addByte(Byte.valueOf(vlaue[i]));
+                        dates[i] = vlaue[i];
                       }
-                    } catch (Exception e) {
-                      e.printStackTrace();
-                      LogUtils.e(this.getClass().getName() + "onTimer", e.getMessage());
-                    } finally {
+                      LogUtils.e(" ReceiveSocketService", HexUtil.encodeHexStr(dates) + "***********len*******" + len);
+                      if (Verifier.getInstance().getByte().size() > 20) {
+                        NewUIData analyse = Verifier.getInstance().analyse();
+                        if (analyse != null) {
+                          Verifier.getInstance().clear();
+                          if (geturidate!=null)geturidate.getUri(analyse);
+                          ReadTaskTimer.getInstance().stopReadTask();
+                          UnRegisterReceiver();
+                        }
+
+                      }
                     }
+                  } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.e(this.getClass().getName() + "onTimer", e.getMessage());
+                  } finally {
                   }
                 }
-              });
-              BC401_UricUtlis.getInstance().getmBluetoothSocket().getOutputStream().write(oneTrans);
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
+              }
+            });
+            BC401_UricUtlis.getInstance().getmBluetoothSocket().getOutputStream().write(oneTrans);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
 
           break;
         case 5:
           //链接失败 重新搜索链接
-         UnRegisterReceiver();
+          UnRegisterReceiver();
           break;
 
       }
@@ -249,12 +255,16 @@ public class BC401_UricUtlis {
 
   public void UnRegisterReceiver() {
     if (geturidate!=null)geturidate.err();
+    if (satus!=null)satus.err();
+    satus=null;
+    geturidate=null;
     isConnect=false;
     if (sdk==null){
       //断开蓝牙连接
       BltManager.getInstance().clickBlt( BLUE_TOOTH_CLEAR);
     }else {
       sdk.stopCommunicate();
+      sdk=null;
     }
 
   }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 import java.security.MessageDigest;
 import java.util.Locale;
@@ -174,5 +175,23 @@ public class DeviceIdUtil {
       sb.append(stmp);
     }
     return sb.toString().toUpperCase(Locale.CHINA);
+  }
+
+  /**
+   * 检查是否激活
+   *
+   * @return
+   */
+  private static String signValue;
+  private  static  String key;
+
+  public static boolean IsRegister() {
+    if (LogUtils.isDebug()) return true;
+    key = (String) SharePrefrenceUtil.getData(Cotexts.getSignKey(), "");
+    signValue = (String) SharePrefrenceUtil.getData(Cotexts.getSignValue(), "");
+    if (TextUtils.isEmpty(key) || TextUtils.isEmpty(signValue)) return false;
+    String sign = MD5Util.Md5(key + Cotexts.getRegiaterKey());
+    if (sign.equals(signValue)) return true;
+    return false;
   }
 }

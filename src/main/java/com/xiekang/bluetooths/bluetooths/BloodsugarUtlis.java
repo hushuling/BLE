@@ -6,8 +6,9 @@ import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
-import android.os.Build;
 
+import com.xiekang.bluetooths.BluetoothDriver;
+import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
 import com.xiekang.bluetooths.interfaces.Getbloodsuar;
 import com.xiekang.bluetooths.utlis.ContextProvider;
 import com.xiekang.bluetooths.utlis.HexUtil;
@@ -31,7 +32,7 @@ import static com.xiekang.bluetooths.utlis.DateUtil.getDecimal;
  * @修改时间 time
  * @修改备注 describe
  */
-public class BloodsugarUtlis {
+public class BloodsugarUtlis implements BluetoothDriver<Getbloodsuar> {
   private static BloodsugarUtlis bloodpress_bluetooth_utlis;
   private String order = "2644312031200632373838340D";
   private BluetoothGatt bluetoothGatt;
@@ -39,6 +40,7 @@ public class BloodsugarUtlis {
   private boolean isconnect = false;
   private BluetoothGattCharacteristic controlCharacteristicl, notifyCharacteristic, batteryCharacteristic;
   private Getbloodsuar geturidate;
+  private Bluetooth_Satus satus;
   public static String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
   public static String Data_UUID = "00004a5b-0000-1000-8000-00805f9b34fb";
 
@@ -54,8 +56,9 @@ public class BloodsugarUtlis {
    *
    * @param
    */
-  public void connect(BluetoothDevice bluetoothDevice, Getbloodsuar bluetooth_satus) {
+  public void Connect(BluetoothDevice bluetoothDevice, Getbloodsuar bluetooth_satus, Bluetooth_Satus bluetoothSatus) {
    RegisterReceiver(bluetooth_satus);
+    this.satus=bluetoothSatus;
     bluetoothGatt = bluetoothDevice.connectGatt(ContextProvider.get().getContext(), false, gattCallback);
     LogUtils.e("血糖连接"+bluetoothGatt.toString());
     if (bluetoothGatt==null)UnRegisterReceiver();
@@ -85,6 +88,7 @@ public class BloodsugarUtlis {
         case BluetoothGatt.STATE_CONNECTED:
           //当连接成果以后，开启这个服务，就可以通信了
           if (geturidate != null) geturidate.succed();
+          if (satus!=null)satus.succed();
               bluetoothGatt.discoverServices();
           break;
         case BluetoothGatt.STATE_CONNECTING:
@@ -267,6 +271,7 @@ public class BloodsugarUtlis {
 
   public void UnRegisterReceiver() {
     if (geturidate != null) geturidate.err();
+    if (satus!=null)satus.err();
     if (bluetoothGatt != null) {
       bluetoothGatt.disconnect();
       bluetoothGatt.close();

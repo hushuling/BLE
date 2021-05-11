@@ -1,17 +1,17 @@
 package com.xiekang.bluetooths.bluetooths;
 
 import android.bluetooth.BluetoothDevice;
-import android.os.Build;
 
 import com.contec.spo2.code.bean.SdkConstants;
 import com.contec.spo2.code.callback.ConnectCallback;
 import com.contec.spo2.code.callback.RealtimeCallback;
 import com.contec.spo2.code.connect.ContecSdk;
 import com.creative.base.BaseDate;
+import com.xiekang.bluetooths.BluetoothDriver;
+import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
 import com.xiekang.bluetooths.interfaces.GetOxgen;
 import com.xiekang.bluetooths.utlis.ContextProvider;
 import com.xiekang.bluetooths.utlis.LogUtils;
-
 
 /**
  * @项目名称 HealthMachine1.4.6
@@ -23,11 +23,11 @@ import com.xiekang.bluetooths.utlis.LogUtils;
  * @修改时间 time
  * @修改备注 describe
  */
-public class OxgenKangTai_Bluetooth_Utlis {
+public class OxgenKangTai_Bluetooth_Utlis implements BluetoothDriver<GetOxgen> {
   private static OxgenKangTai_Bluetooth_Utlis bloodpress_bluetooth_utlis;
   private final ContecSdk sdk;
   private GetOxgen getOxgen;
-
+  private Bluetooth_Satus satus;
   public static OxgenKangTai_Bluetooth_Utlis getInstance() {
     if (bloodpress_bluetooth_utlis == null) {
       bloodpress_bluetooth_utlis = new OxgenKangTai_Bluetooth_Utlis();
@@ -45,8 +45,9 @@ public class OxgenKangTai_Bluetooth_Utlis {
    *
    * @param
    */
-  public void connect(BluetoothDevice bluetoothDevice, GetOxgen bluetooth_satus) {
+  public void Connect(BluetoothDevice bluetoothDevice, GetOxgen bluetooth_satus, Bluetooth_Satus bluetoothSatus) {
     RegisterReceiver(bluetooth_satus);
+    this.satus=bluetoothSatus;
     if (sdk != null) sdk.connect(bluetoothDevice, connectCallback);
   }
 
@@ -60,6 +61,7 @@ public class OxgenKangTai_Bluetooth_Utlis {
       if (status == SdkConstants.CONNECT_CONNECTED) {
         //监听成功
         if (getOxgen != null) getOxgen.succed();
+        if (satus!=null)satus.succed();
         startFingerOximeter();
       }
       if (status == SdkConstants.CONNECT_DISCONNECTED || status == SdkConstants.CONNECT_DISCONNECT_EXCEPTION
@@ -102,7 +104,7 @@ public class OxgenKangTai_Bluetooth_Utlis {
 
         LogUtils.e("errorCode = " + errorCode);
       }
-    });
+    });///////////
   }
 
   private void RegisterReceiver(GetOxgen getTemperature) {
@@ -111,6 +113,7 @@ public class OxgenKangTai_Bluetooth_Utlis {
 
   public void UnRegisterReceiver() {
     if (getOxgen!=null)getOxgen.err();
+    if (satus!=null)satus.err();
     sdk.disconnect();
   }
 

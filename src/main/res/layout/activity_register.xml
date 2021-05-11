@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout
+      android:id="@+id/ll_machinecode"
+      android:layout_marginTop="50dp"
+      android:layout_centerHorizontal="true"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center">
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="机器码"
+        android:textColor="@color/color_val_3f4347"
+        android:textSize="35px"/>
+
+      <TextView
+        android:layout_marginLeft="50px"
+        android:id="@+id/textview1"
+        style="@style/register_ed"/>
+
+      <TextView
+        android:id="@+id/textview2"
+        style="@style/register_ed"/>
+
+      <TextView
+        android:id="@+id/textview3"
+        style="@style/register_ed"/>
+
+      <TextView
+        android:id="@+id/textview4"
+        style="@style/register_ed"/>
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/ll_registrationcode"
+      android:layout_centerHorizontal="true"
+      android:layout_below="@+id/ll_machinecode"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginTop="100px">
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="注册码"
+        android:textColor="@color/color_val_3f4347"
+        android:textSize="35px"/>
+      <EditText
+        android:layout_marginLeft="50px"
+        android:id="@+id/edittext1"
+        style="@style/register_ed"/>
+
+      <EditText
+        android:id="@+id/edittext2"
+        style="@style/register_ed"/>
+
+      <EditText
+        android:id="@+id/edittext3"
+        style="@style/register_ed"/>
+
+      <EditText
+        android:id="@+id/edittext4"
+        style="@style/register_ed"/>
+    </LinearLayout>
+`
+    <Button
+      android:id="@+id/btn_sure"
+      android:layout_width="300px"
+      android:layout_height="80px"
+      android:layout_below="@+id/ll_registrationcode"
+      android:layout_centerHorizontal="true"
+      android:layout_marginTop="70px"
+      android:layout_marginBottom="20dp"
+      android:background="@drawable/shape_urine_nomore"
+      android:text="确定"
+      android:textColor="@color/white"
+      android:textSize="30px" />
+  </RelativeLayout>
+</layout>

@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.xiekang.bluetooths.utlis.Common.Crash;
+import static com.xiekang.bluetooths.utlis.Cotexts.getCrash;
 
 /**
  * 未捕获异常处理类
@@ -111,10 +111,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
   public static String getSaveDir() {
     if (Environment.getExternalStorageState().equals(
         Environment.MEDIA_MOUNTED)) {
-      return Environment.getExternalStorageDirectory() + Common.APP_DIR;
+      return Environment.getExternalStorageDirectory() + Cotexts.getAppDir();
     }
     return Environment.getDataDirectory().getAbsolutePath()
-        + Common.APP_DIR;
+        + Cotexts.getAppDir();
   }
 
   /**
@@ -175,9 +175,9 @@ public class CrashHandler implements UncaughtExceptionHandler {
     String result = writer.toString();
     sb.append(result);
     System.out.println(sb);
-    FileUtil.CreaterFile(Crash);
-    FileUtil.createFile(getSaveDir()+Crash,Common.Crash_Text);
-    FileUtil.writeDataToFile(getSaveDir()+Crash+Common.Crash_Text, sb.toString());
+    FileUtil.CreaterFile(getCrash());
+    FileUtil.createFile(getSaveDir()+getCrash(), Cotexts.getCrash_Text());
+    FileUtil.writeDataToFile(getSaveDir()+getCrash()+ Cotexts.getCrash_Text(), sb.toString());
   }
 
   /**

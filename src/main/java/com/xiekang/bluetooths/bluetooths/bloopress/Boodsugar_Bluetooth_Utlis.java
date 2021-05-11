@@ -9,11 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
 
+import com.xiekang.bluetooths.BluetoothDriver;
+import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
 import com.xiekang.bluetooths.interfaces.Getbloodsuar;
 import com.xiekang.bluetooths.utlis.ContextProvider;
 import com.xiekang.bluetooths.utlis.HexUtil;
@@ -35,7 +36,7 @@ import static android.content.Context.BIND_AUTO_CREATE;
  * @修改时间 time
  * @修改备注 describe
  */
-public class Boodsugar_Bluetooth_Utlis {
+public class Boodsugar_Bluetooth_Utlis  implements BluetoothDriver<Getbloodsuar> {
   private static Boodsugar_Bluetooth_Utlis bloodpress_bluetooth_utlis;
   private Getbloodsuar mbluetoothsatus;
   private BluetoothLeService mBluetoothLeService;
@@ -47,7 +48,7 @@ public class Boodsugar_Bluetooth_Utlis {
   private byte[] sendDataByte;
   private boolean isBingd;
   private Intent intent;
-
+  private Bluetooth_Satus satus;
 
   private Boodsugar_Bluetooth_Utlis() {
 
@@ -75,9 +76,10 @@ public class Boodsugar_Bluetooth_Utlis {
    *
    * @param
    */
-  public void connect(BluetoothDevice bluetoothDevice, Getbloodsuar bluetooth_satus) {
+  public void Connect(BluetoothDevice bluetoothDevice, Getbloodsuar bluetooth_satus, Bluetooth_Satus satus) {
     LogUtils.e("连接中****");
     flag=true;
+    this.satus=satus;
     RegisterReceiver(bluetooth_satus);
     mDeviceAddress = bluetoothDevice.getAddress();
     Intent gattServiceIntent = new Intent(ContextProvider.get().getContext(), BluetoothLeService.class);
@@ -111,6 +113,7 @@ public class Boodsugar_Bluetooth_Utlis {
       if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
         LogUtils.e("连接成功*******");
            if (mbluetoothsatus!= null) mbluetoothsatus.succed();
+        if (satus!=null)satus.succed();
       } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED
           .equals(action)) {
         UnRegisterReceiver();
@@ -406,6 +409,7 @@ public class Boodsugar_Bluetooth_Utlis {
 
   public void UnRegisterReceiver() {
     if (mbluetoothsatus!= null) mbluetoothsatus.err();
+    if (satus!=null)satus.err();
     if (isBingd){
       ContextProvider.get().getContext().unbindService(mServiceConnection);
       if (mBluetoothLeService!=null)mBluetoothLeService.close();

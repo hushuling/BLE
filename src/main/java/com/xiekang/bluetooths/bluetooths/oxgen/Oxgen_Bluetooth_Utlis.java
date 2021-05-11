@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,12 +11,16 @@ import android.os.Message;
 import com.creative.FingerOximeter.FingerOximeter;
 import com.creative.FingerOximeter.IFingerOximeterCallBack;
 import com.creative.base.BaseDate;
+import com.creative.FingerOximeter.FingerOximeter;
+import com.creative.FingerOximeter.IFingerOximeterCallBack;
+import com.creative.base.BaseDate;
+import com.xiekang.bluetooths.BluetoothDriver;
+import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
 import com.xiekang.bluetooths.interfaces.GetOxgen;
 import com.xiekang.bluetooths.utlis.ContextProvider;
 import com.xiekang.bluetooths.utlis.LogUtils;
 
 import java.util.List;
-
 
 /**
  * @项目名称 HealthMachine1.4.6
@@ -29,12 +32,12 @@ import java.util.List;
  * @修改时间 time
  * @修改备注 describe
  */
-public class Oxgen_Bluetooth_Utlis {
+public class Oxgen_Bluetooth_Utlis implements BluetoothDriver<GetOxgen> {
   private static Oxgen_Bluetooth_Utlis bloodpress_bluetooth_utlis;
   private GetOxgen getOxgen;
   private ReaderBLE readerBLE;
   private SenderBLE senderBLE;
-
+  private Bluetooth_Satus satus;
   public static Oxgen_Bluetooth_Utlis getInstance() {
     if (bloodpress_bluetooth_utlis == null) {
       bloodpress_bluetooth_utlis = new Oxgen_Bluetooth_Utlis();
@@ -47,7 +50,8 @@ public class Oxgen_Bluetooth_Utlis {
    *
    * @param
    */
-  public void connect(BluetoothDevice bluetoothDevice, GetOxgen bluetooth_satus) {
+  public void Connect(BluetoothDevice bluetoothDevice, GetOxgen bluetooth_satus, Bluetooth_Satus satus) {
+    this.satus=satus;
     RegisterReceiver(bluetooth_satus);
     if (mManager != null) mManager.connect(bluetoothDevice.getAddress());
   }
@@ -62,6 +66,7 @@ public class Oxgen_Bluetooth_Utlis {
 
   public void UnRegisterReceiver() {
     if (getOxgen!=null)getOxgen.err();
+    if (satus!=null)satus.err();
     if (mManager != null) {
       if (senderBLE != null) senderBLE.close();
       if (readerBLE != null) readerBLE.close();
@@ -83,6 +88,7 @@ public class Oxgen_Bluetooth_Utlis {
       if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
         LogUtils.e(this.getClass().getName(), "链接成功*****");
         if (getOxgen != null) getOxgen.succed();
+        if (satus!=null)satus.succed();
       } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
         LogUtils.e(this.getClass().getName(), "链接断开*****");
         UnRegisterReceiver();
@@ -276,7 +282,7 @@ public class Oxgen_Bluetooth_Utlis {
     //send 10 packet 1/s. param "waves" is 1 data packet
     @Override
     public void OnGetSpO2Wave(List<BaseDate.Wave> waves) {
-      //Log.d(TAG, "wave.size:"+waves.size()); // size = 5
+      LogUtils.e("OnGetSpO2Wave", "wave.size:"+waves.size()); // size = 5
       for (int i = 0; i < waves.size(); i++) {
         if (getOxgen != null) getOxgen.startDraw(waves.get(i));
       }

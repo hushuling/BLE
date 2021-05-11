@@ -6,8 +6,9 @@ import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
-import android.os.Build;
 
+import com.xiekang.bluetooths.BluetoothDriver;
+import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
 import com.xiekang.bluetooths.interfaces.GetBloodfat;
 import com.xiekang.bluetooths.utlis.ContextProvider;
 import com.xiekang.bluetooths.utlis.HexUtil;
@@ -28,7 +29,7 @@ import java.util.UUID;
  * @修改时间 time
  * @修改备注 describe
  */
-public class BloodFat_KaDik_Utlis {
+public class BloodFat_KaDik_Utlis implements BluetoothDriver<GetBloodfat> {
   private static BloodFat_KaDik_Utlis bloodFat_kaDik_utlis;
   private BluetoothGatt bluetoothGatt;
   private List<BluetoothDevice> devicelist = new ArrayList<BluetoothDevice>();
@@ -37,6 +38,7 @@ public class BloodFat_KaDik_Utlis {
   private BluetoothGattCharacteristic controlCharacteristicl, notifyCharacteristic, batteryCharacteristic;
   private static final int MSG_BLUETOOTH_DISCOVERYED = 77;
   private GetBloodfat getBloodfat;
+  private Bluetooth_Satus satus;
   private StringBuilder mOutputInfo = new StringBuilder();
   //解析
   public String GATT_SERVICE_PRIMARY = "0000ffe4-0000-1000-8000-00805f9b34fb";
@@ -54,8 +56,9 @@ public class BloodFat_KaDik_Utlis {
    *
    * @param
    */
-  public void connect(BluetoothDevice bluetoothDevice, GetBloodfat bluetooth_satus) {
+  public void Connect(BluetoothDevice bluetoothDevice, GetBloodfat bluetooth_satus, Bluetooth_Satus bluetoothSatus) {
     RegisterReceiver(bluetooth_satus);
+    this.satus=bluetoothSatus;
     bluetoothGatt = bluetoothDevice.connectGatt(ContextProvider.get().getContext(), false, gattCallback);
     if (bluetoothGatt == null) UnRegisterReceiver();
     LogUtils.e(bluetoothGatt);
@@ -103,6 +106,7 @@ public class BloodFat_KaDik_Utlis {
           //当连接成果以后，开启这个服务，就可以通信了
           bluetoothGatt.discoverServices();
           if (getBloodfat != null) getBloodfat.succed();
+          if (satus!=null)satus.succed();
           break;
         case BluetoothGatt.STATE_CONNECTING:
           break;
@@ -353,6 +357,7 @@ public class BloodFat_KaDik_Utlis {
 
   public void UnRegisterReceiver() {
     if (getBloodfat!=null)getBloodfat.err();
+    if (satus!=null)satus.err();
     if (bluetoothGatt != null) {
       bluetoothGatt.disconnect();
       bluetoothGatt.close();

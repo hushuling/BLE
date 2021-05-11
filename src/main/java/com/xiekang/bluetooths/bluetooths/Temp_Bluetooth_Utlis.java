@@ -7,6 +7,8 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 
+import com.xiekang.bluetooths.BluetoothDriver;
+import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
 import com.xiekang.bluetooths.interfaces.GetTemperature;
 import com.xiekang.bluetooths.utlis.ContextProvider;
 import com.xiekang.bluetooths.utlis.HexUtil;
@@ -28,14 +30,16 @@ import static com.xiekang.bluetooths.utlis.HexUtil.Bytes2HexString;
  * @修改时间 time
  * @修改备注 describe
  */
-public class Temp_Bluetooth_Utlis {
+public class Temp_Bluetooth_Utlis  implements BluetoothDriver<GetTemperature> {
   private static Temp_Bluetooth_Utlis bloodpress_bluetooth_utlis;
   private BluetoothGatt bluetoothGatt;
   private BluetoothGattCharacteristic notifyCharacteristic;
   private GetTemperature geturidate;
-
+  private Bluetooth_Satus satus;
   public static String GATT_SERVICE_PRIMARY = "0000fff1-0000-1000-8000-00805f9b34fb";
   public static String CHARACTERISTIC_READAB  = "00002902-0000-1000-8000-00805f9b34fb";
+  private BluetoothDevice bluetoothDevice;
+
   public static Temp_Bluetooth_Utlis getInstance() {
     if (bloodpress_bluetooth_utlis==null){
       bloodpress_bluetooth_utlis=new Temp_Bluetooth_Utlis();
@@ -47,7 +51,9 @@ public class Temp_Bluetooth_Utlis {
    *
    * @param
    */
-  public void connect(BluetoothDevice bluetoothDevice, GetTemperature bluetooth_satus) {
+  public void Connect(BluetoothDevice bluetoothDevice, GetTemperature bluetooth_satus, Bluetooth_Satus bluetoothSatus) {
+    this.bluetoothDevice=bluetoothDevice;
+    this.satus=bluetoothSatus;
     RegisterReceiver(bluetooth_satus);
       bluetoothGatt = bluetoothDevice.connectGatt(ContextProvider.get().getContext(), false, gattCallback);
     if (bluetoothGatt==null)UnRegisterReceiver();
@@ -58,17 +64,24 @@ public class Temp_Bluetooth_Utlis {
     @Override
     public void onConnectionStateChange(final BluetoothGatt gatt, final int status, final int newState) {
       super.onConnectionStateChange(gatt, status, newState);
-      LogUtils.e("连接状态newState："+newState+"status:"+status);
+      LogUtils.e("连接状态newState："+newState+"status:"+status+"***bluetoothGatt:"+bluetoothGatt.toString()+"**gattCallback:"+gattCallback.toString());
           switch (newState) {
             case BluetoothGatt.STATE_CONNECTED:
               //当连接成果以后，开启这个服务，就可以通信了
               bluetoothGatt.discoverServices();
               if (geturidate!=null)geturidate.succed();
+              if (satus!=null)satus.succed();
               break;
             case BluetoothGatt.STATE_CONNECTING:
               break;
             case BluetoothGatt.STATE_DISCONNECTED:
-              UnRegisterReceiver();
+              if (status!=0){
+                if (bluetoothDevice!=null&&geturidate!=null){
+                  Connect(bluetoothDevice,geturidate,satus);
+                }
+              }else {
+                UnRegisterReceiver();
+              }
               break;
             default:
               break;
@@ -120,7 +133,7 @@ public class Temp_Bluetooth_Utlis {
           if (date.contains("Body:")) {
             if (date.contains("C")) {
               final String tem = date.substring(date.indexOf(":") + 1, date.indexOf("C"));
-              if (geturidate!=null)geturidate.getbloodfat(tem);
+              if (geturidate!=null)geturidate.getTempter(tem);
               UnRegisterReceiver();
             } else {
               if (geturidate!=null)geturidate.errCode("请设置正确的单位");
@@ -163,6 +176,8 @@ public class Temp_Bluetooth_Utlis {
 
   public void UnRegisterReceiver() {
     if (geturidate!=null)geturidate.err();
+    if (satus!=null)satus.err();
+    this.bluetoothDevice=null;
     if (bluetoothGatt != null) {
       bluetoothGatt.disconnect();
       bluetoothGatt.close();

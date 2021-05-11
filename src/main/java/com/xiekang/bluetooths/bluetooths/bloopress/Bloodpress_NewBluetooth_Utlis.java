@@ -7,23 +7,18 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.xiekang.bluetooths.interfaces.GetBloodfat;
+import com.xiekang.bluetooths.bean.BloodpressDate;
+import com.xiekang.bluetooths.interfaces.Bloodpress_intenface;
 import com.xiekang.bluetooths.utlis.ContextProvider;
 import com.xiekang.bluetooths.utlis.HexUtil;
 import com.xiekang.bluetooths.utlis.LogUtils;
 
-import net.litcare.lplibrary.bf.BFException;
-import net.litcare.lplibrary.bf.BFRecordHelper;
-import net.litcare.lplibrary.bf.BFType;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @项目名称 HealthMachine1.4.6
@@ -193,7 +188,7 @@ public class Bloodpress_NewBluetooth_Utlis {
             if (!getResult) {
               LogUtils.e("当前结果：" + result_temp);
               getResult = true;
-              if (getBloodfat!=null)getBloodfat.getDate(new Bloodpress_Bluetooth_Utlis.Info(mHighValue,mmLowValue,mHeratValue));
+              if (getBloodfat!=null)getBloodfat.getDate(new BloodpressDate(mHighValue,mmLowValue,mHeratValue));
               UnRegisterReceiver();
             }
         } catch (Exception e) {

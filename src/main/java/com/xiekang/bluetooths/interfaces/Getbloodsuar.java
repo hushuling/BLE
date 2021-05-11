@@ -10,6 +10,9 @@ package com.xiekang.bluetooths.interfaces;
  * @修改时间 time
  * @修改备注 describe
  */
-public interface Getbloodsuar  extends Bluetooth_Satus{
+public interface Getbloodsuar  extends Bluetooth_Satus {
+  /**
+   * @param bloodsugar
+   */
   void getbloodsugar(float bloodsugar);
 }

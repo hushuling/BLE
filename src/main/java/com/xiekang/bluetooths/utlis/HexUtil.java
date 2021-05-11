@@ -1,5 +1,8 @@
 package com.xiekang.bluetooths.utlis;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * @Description: 十六进制转换类
  * @author: <a href="http://www.xiaoyaoyou1212.com">DAWI</a>
@@ -326,5 +329,11 @@ public class HexUtil {
 
     return stringBuilder.toString().toUpperCase();
 
+  }
+
+  //保留两位小数&&四舍五入
+  public static float formatfloat(float d) {
+    BigDecimal bg = new BigDecimal(d).setScale(2, RoundingMode.HALF_UP);
+    return (float) bg.doubleValue();
   }
 }

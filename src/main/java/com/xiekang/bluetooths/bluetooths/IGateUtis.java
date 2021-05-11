@@ -9,6 +9,8 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.text.TextUtils;
 
+import com.xiekang.bluetooths.BluetoothDriver;
+import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
 import com.xiekang.bluetooths.interfaces.GetBloodfat;
 import com.xiekang.bluetooths.utlis.ContextProvider;
 import com.xiekang.bluetooths.utlis.LogUtils;
@@ -29,10 +31,11 @@ import static com.xiekang.bluetooths.utlis.HexUtil.printHexString;
  * @修改时间 time
  * @修改备注 describe
  */
-public class IGateUtis {
+public class IGateUtis implements BluetoothDriver<GetBloodfat> {
   private static IGateUtis iGateUtis;
   private BluetoothGatt bluetoothGatt;
   private GetBloodfat getBloodfat;
+  private Bluetooth_Satus satus;
   private boolean flag = false;
   //连接状态
   private boolean isconnect = false;
@@ -60,6 +63,7 @@ public class IGateUtis {
 
   public void UnRegisterReceiver() {
     if (getBloodfat != null) getBloodfat.err();
+    if (satus!=null)satus.err();
     getBloodfat = null;
     hexdate.delete(0, hexdate.length());
     date.delete(0, date.length());
@@ -76,8 +80,9 @@ public class IGateUtis {
    *
    * @param
    */
-  public void connect(final BluetoothDevice bluetoothDevice, GetBloodfat bluetooth_satus) {
+  public void Connect(final BluetoothDevice bluetoothDevice, GetBloodfat bluetooth_satus, Bluetooth_Satus bluetoothSatus) {
     RegisterReceiver(bluetooth_satus);
+    this.satus=bluetoothSatus;
     address=bluetoothDevice.getAddress();
     if (flag) {
       bluetoothGatt.disconnect();
@@ -102,6 +107,7 @@ public class IGateUtis {
               flag = true;
               bluetoothGatt.discoverServices();
                     getBloodfat.succed();
+              if (satus!=null)satus.succed();
               break;
             case BluetoothGatt.STATE_CONNECTING:
               LogUtils.e("链接中****");
@@ -111,10 +117,11 @@ public class IGateUtis {
               if (flag) {
                 isconnect = false;
                 getBloodfat.err();
+                if (satus!=null)satus.err();
               } else {
                 if (status != 0 && !TextUtils.isEmpty(address)) {
                   LogUtils.e("连接出现异常重新连接******" + newState);
-                  connect(BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address),null);
+                  Connect(BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address),getBloodfat,satus);
                 }
               }
               flag = false;

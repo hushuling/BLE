@@ -9,9 +9,10 @@ import android.graphics.Path;
 import android.support.annotation.ColorRes;
 import android.util.AttributeSet;
 
-import com.creative.base.BaseDate.Wave;
+import com.creative.base.BaseDate;
 import com.xiekang.bluetooths.bluetooths.oxgen.Oxgen_Bluetooth_Utlis;
 import com.xiekang.bluetooths.utlis.ContextProvider;
+import com.xiekang.bluetooths2.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +31,12 @@ public class DrawThreadNW extends BaseDraw {
 	/** 血氧波形高度缩放比例 */
 	private float zoomSpo2 = 0.0f;
 	private String msg;
-  private int drawColor;
+  private int drawColor= R.color.color_val_5fc079;
 	/**
 	 * 设置波形数据
 	 * @param SPO_WAVE
 	 */
-	public void setSPO_WAVE(Wave SPO_WAVE) {
+	public void setSPO_WAVE(BaseDate.Wave SPO_WAVE) {
 		this.SPO_WAVE.add(SPO_WAVE);
 	}
 
@@ -48,7 +49,7 @@ public class DrawThreadNW extends BaseDraw {
 		 postInvalidate();
 	}
 
-	private List<Wave> SPO_WAVE = new ArrayList<Wave>();
+	private List<BaseDate.Wave> SPO_WAVE = new ArrayList<BaseDate.Wave>();
 
 	public DrawThreadNW(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -84,21 +85,21 @@ public class DrawThreadNW extends BaseDraw {
 						this.wait();
 					}
 					if (SPO_WAVE.size() > 0) {
-						Wave data = SPO_WAVE.remove(0);
+						BaseDate.Wave data = SPO_WAVE.remove(0);
 						addData(data.data);
 						if (data.flag == 1) { //发送搏动标记
 							mHandler.sendEmptyMessage(Oxgen_Bluetooth_Utlis.MSG_DATA_PULSE);
 						}
-						
+
 						//设置参数，调整波形，adjust wave
 						if (SPO_WAVE.size() > 20) {
 							Thread.sleep(12); //18
 						} else {
 							Thread.sleep(25); //25
-						}							
+						}
 					} else {
 						Thread.sleep(500);
-					}					
+					}
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

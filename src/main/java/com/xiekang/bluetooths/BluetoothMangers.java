@@ -1,5 +1,6 @@
 package com.xiekang.bluetooths;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanCallback;
@@ -14,30 +15,41 @@ import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 
 import com.creative.base.BaseDate;
+import com.xiekang.bluetooths.bean.BloodpressDate;
+import com.xiekang.bluetooths.bean.Common;
 import com.xiekang.bluetooths.bean.NewUIData;
 import com.xiekang.bluetooths.bluetooths.BC401_UricUtlis;
 import com.xiekang.bluetooths.bluetooths.BloodFat_KaDik_Utlis;
 import com.xiekang.bluetooths.bluetooths.BloodFat_LePuBluetooth_Utlis;
 import com.xiekang.bluetooths.bluetooths.BloodsugarUtlis;
 import com.xiekang.bluetooths.bluetooths.BluetoothAdapterContext;
+import com.xiekang.bluetooths.bluetooths.DingHen_W_Heigth_Bluetooth_Utlis;
+import com.xiekang.bluetooths.bluetooths.ICDeviceUtlis;
+import com.xiekang.bluetooths.bluetooths.ID300DeviceUtlis;
 import com.xiekang.bluetooths.bluetooths.IGateUtis;
+import com.xiekang.bluetooths.bluetooths.Icomon_WaislineUtlis;
 import com.xiekang.bluetooths.bluetooths.OxgenKangTai_Bluetooth_Utlis;
 import com.xiekang.bluetooths.bluetooths.QNBleDeviceUtlis;
 import com.xiekang.bluetooths.bluetooths.Sugar_OxygenUtlis;
 import com.xiekang.bluetooths.bluetooths.Temp_Bluetooth_Utlis;
 import com.xiekang.bluetooths.bluetooths.bloopress.Bloodpress_Bluetooth_Utlis;
-import com.xiekang.bluetooths.bluetooths.bloopress.Bloodpress_intenface;
 import com.xiekang.bluetooths.bluetooths.bloopress.Boodsugar_Bluetooth_Utlis;
 import com.xiekang.bluetooths.bluetooths.bloopress.Templte_Bluetooth_Utlis;
+import com.xiekang.bluetooths.bluetooths.breath_home.Breath_Home_DeviceUtlis;
 import com.xiekang.bluetooths.bluetooths.oxgen.Oxgen_Bluetooth_Utlis;
+import com.xiekang.bluetooths.interfaces.Bloodpress_intenface;
 import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
 import com.xiekang.bluetooths.interfaces.Blutooth_Search;
 import com.xiekang.bluetooths.interfaces.GetBloodfat;
+import com.xiekang.bluetooths.interfaces.GetBodyfat;
+import com.xiekang.bluetooths.interfaces.GetBreath;
+import com.xiekang.bluetooths.interfaces.GetH_Weight;
+import com.xiekang.bluetooths.interfaces.GetIDcar;
 import com.xiekang.bluetooths.interfaces.GetOxgen;
 import com.xiekang.bluetooths.interfaces.GetTemperature;
 import com.xiekang.bluetooths.interfaces.GetUriDate;
+import com.xiekang.bluetooths.interfaces.GetWaislin;
 import com.xiekang.bluetooths.interfaces.Getbloodsuar;
-import com.xiekang.bluetooths.utlis.Common;
 import com.xiekang.bluetooths.utlis.ContextProvider;
 import com.xiekang.bluetooths.utlis.LogUtils;
 
@@ -45,22 +57,27 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.xiekang.bluetooths.utlis.Common.AlKAN;
-import static com.xiekang.bluetooths.utlis.Common.BC01;
-import static com.xiekang.bluetooths.utlis.Common.Bioland_BGM;
-import static com.xiekang.bluetooths.utlis.Common.Bioland_BPM;
-import static com.xiekang.bluetooths.utlis.Common.Bioland_IT;
-import static com.xiekang.bluetooths.utlis.Common.Bluetooth_BP;
-import static com.xiekang.bluetooths.utlis.Common.CardioChek;
-import static com.xiekang.bluetooths.utlis.Common.LPM311;
-import static com.xiekang.bluetooths.utlis.Common.OGM;
-import static com.xiekang.bluetooths.utlis.Common.POD;
-import static com.xiekang.bluetooths.utlis.Common.QN_Scale;
-import static com.xiekang.bluetooths.utlis.Common.SpO2;
-import static com.xiekang.bluetooths.utlis.Common.Statu;
-import static com.xiekang.bluetooths.utlis.Common.connecttimeout;
-import static com.xiekang.bluetooths.utlis.Common.iGate;
-import static com.xiekang.bluetooths.utlis.Common.searchtimeout;
+import static com.xiekang.bluetooths.bean.Common.AlKAN;
+import static com.xiekang.bluetooths.bean.Common.BC01;
+import static com.xiekang.bluetooths.bean.Common.Bioland_BGM;
+import static com.xiekang.bluetooths.bean.Common.Bioland_BPM;
+import static com.xiekang.bluetooths.bean.Common.Bioland_IT;
+import static com.xiekang.bluetooths.bean.Common.Breath;
+import static com.xiekang.bluetooths.bean.Common.Icomon;
+import static com.xiekang.bluetooths.bean.Common.TD133;
+import static com.xiekang.bluetooths.bean.Common.CardioChek;
+import static com.xiekang.bluetooths.bean.Common.DH;
+import static com.xiekang.bluetooths.bean.Common.iDR210;
+import static com.xiekang.bluetooths.bean.Common.LPM311;
+import static com.xiekang.bluetooths.bean.Common.Mr5;
+import static com.xiekang.bluetooths.bean.Common.OGM;
+import static com.xiekang.bluetooths.bean.Common.POD;
+import static com.xiekang.bluetooths.bean.Common.QN_Scale;
+import static com.xiekang.bluetooths.bean.Common.SpO2;
+import static com.xiekang.bluetooths.bean.Common.connecttimeout;
+import static com.xiekang.bluetooths.bean.Common.iGate;
+import static com.xiekang.bluetooths.bean.Common.searchtimeout;
+import static com.xiekang.bluetooths.utlis.DeviceIdUtil.IsRegister;
 
 /**
  * @项目名称 bluetooths
@@ -73,7 +90,7 @@ import static com.xiekang.bluetooths.utlis.Common.searchtimeout;
  * @修改备注 describe
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public class BluetoothMangers {
+public class BluetoothMangers{
   private static final BluetoothMangers ourInstance = new BluetoothMangers();
   private final MyHanlder mhanler;
   private BluetoothAdapter mbluetoothAdapter;
@@ -98,7 +115,10 @@ public class BluetoothMangers {
   public static BluetoothMangers getInstance() {
     return ourInstance;
   }
-
+  private Bluetooth_Satus date;
+  public void RegisterReceiver( Bluetooth_Satus bluetooth_satus) {
+   this.date=bluetooth_satus;
+  }
   /**
    * 开始搜索
    *
@@ -106,7 +126,9 @@ public class BluetoothMangers {
    * @param blutooth_search 搜索进度接口
    */
   public void StartSearch(String mblutoothName, Blutooth_Search blutooth_search) {
+    if (!IsRegister()) return;
     this.mblutoothName = mblutoothName;
+    //肺功能的蓝牙名称不是固定的
     this.blutooth_search = blutooth_search;
     deviceList.clear();
     scanRecordlist.clear();
@@ -191,6 +213,7 @@ public class BluetoothMangers {
    * 停止搜索
    */
   public void StopScan() {
+    if (!IsRegister()) return;
     if (isStart) {
       mbluetoothAdapter.getBluetoothLeScanner().stopScan(mLeScanCallback);
     }
@@ -204,28 +227,31 @@ public class BluetoothMangers {
   private ScanCallback mLeScanCallback = new ScanCallback() {
 
     public void onScanResult(int callbackType, ScanResult result) {
+      String blutoothname=mblutoothName;
+      if (mblutoothName.equals(Breath)) blutoothname=Breath_Home_DeviceUtlis.getInstance().getBreachConfigBuilder().getIMEI();
       //这里根据相应的蓝牙设备，做改动，我这里设备是名称是以“BLE”开头
       //将搜索蓝牙设备加入显示列表
-      LogUtils.e("搜索到附近的蓝牙设备-*--------" + "***" +result.getDevice().getName() + "****" + result.getDevice().getAddress() + "***" + result.getScanRecord() );
+      LogUtils.e("搜索到蓝牙设备" + "**" + result.getDevice().getName() + "**" + result.getDevice().getAddress());
       if (!TextUtils.isEmpty(result.getDevice().getName())) {
         //rssi 距离限制
-        if (result.getDevice().getName().contains(mblutoothName) && !deviceList.contains(result.getDevice()) && !scanRecordlist.contains(result.getScanRecord())) {
+        if (result.getDevice().getName().contains(blutoothname) && !deviceList.contains(result.getDevice()) && !scanRecordlist.contains(result.getScanRecord())) {
           deviceList.add(result.getDevice());
           scanRecordlist.add(result.getScanRecord().getBytes());
           isSearch = true;
           LogUtils.e("添加到搜索列表中****");
         }
-        if (blutooth_search != null&&deviceList.size()>0&&scanRecordlist.size()>0)
+        if (blutooth_search != null && deviceList.size() > 0 && scanRecordlist.size() > 0)
           blutooth_search.Searched(deviceList, scanRecordlist);
 
       }
     }
+
     public void onBatchScanResults(List<ScanResult> results) {
-      LogUtils.e("onBatchScanResults-*--------" + "***" +results.size() );
+      LogUtils.e("onBatchScanResults-*--------" + "***" + results.size());
     }
 
     public void onScanFailed(int errorCode) {
-      LogUtils.e("onScanFailed****"+errorCode);
+      LogUtils.e("onScanFailed****" + errorCode);
     }
   };
   //连接的状态
@@ -235,15 +261,16 @@ public class BluetoothMangers {
    * 连接设备
    *
    * @param remoteDevice    搜索到对映设备的蓝牙对象
-   * @param bluetooth_satus 获取数据和状态接口
    */
-  public void Connect(BluetoothDevice remoteDevice, final Bluetooth_Satus bluetooth_satus) {
+  public void Connect(BluetoothDevice remoteDevice,Bluetooth_Satus bluetooth_satus) {
+    if (!IsRegister()) return;
+    LogUtils.e(remoteDevice.getName()+"**"+remoteDevice.getAddress()+"开始链接**");
     succed = false;
     mhanler.postDelayed(new Runnable() {
       @Override
       public void run() {
         if (!succed) {
-          Stop();
+          UnRegisterReceiver();
           bluetooth_satus.err();
         }
       }
@@ -251,285 +278,71 @@ public class BluetoothMangers {
 
     if (!TextUtils.isEmpty(mblutoothName)) {
       switch (mblutoothName) {
-        case OGM:
-          BloodsugarUtlis.getInstance().connect(remoteDevice, new Getbloodsuar() {
-            @Override
-            public void getbloodsugar(float bloodsugar) {
-              ((Getbloodsuar) bluetooth_satus).getbloodsugar(bloodsugar);
-            }
-
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-          });
+        case QN_Scale:
+          QNBleDeviceUtlis.getInstance().Connect(remoteDevice, (GetBodyfat) date,bluetooth_satus);
           break;
-        case Bioland_BPM: {
-          Bloodpress_Bluetooth_Utlis.getInstance().connect(remoteDevice, new Bloodpress_intenface<Bloodpress_Bluetooth_Utlis.Info>() {
-
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-
-            @Override
-            public void current(int date) {
-              ((Bloodpress_intenface) bluetooth_satus).current(date);
-            }
-
-            @Override
-            public void getDate(Bloodpress_Bluetooth_Utlis.Info uiData) {
-              ((Bloodpress_intenface) bluetooth_satus).getDate(uiData);
-            }
-          });
-        }
-        break;
-        case Bioland_BGM: {
-          Boodsugar_Bluetooth_Utlis.getInstance().connect(remoteDevice, new Getbloodsuar() {
-            @Override
-            public void getbloodsugar(float bloodsugar) {
-              ((Getbloodsuar) bluetooth_satus).getbloodsugar(bloodsugar);
-            }
-
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-          });
-        }
-        break;
-        case Bluetooth_BP: {
-          Temp_Bluetooth_Utlis.getInstance().connect(remoteDevice, new GetTemperature() {
-            @Override
-            public void getbloodfat(String chlo) {
-              ((GetTemperature) bluetooth_satus).getbloodfat(chlo);
-            }
-
-            @Override
-            public void errCode(String messager) {
-              ((GetTemperature) bluetooth_satus).errCode(messager);
-            }
-
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-          });
-        }
-        break;
-        case Bioland_IT: {
-
-          Templte_Bluetooth_Utlis.getInstance().connect(remoteDevice, new GetTemperature() {
-            @Override
-            public void getbloodfat(String chlo) {
-              ((GetTemperature) bluetooth_satus).getbloodfat(chlo);
-
-            }
-
-            @Override
-            public void errCode(String messager) {
-              ((GetTemperature) bluetooth_satus).errCode(messager);
-            }
-
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-
-          });
-        }
-        break;
-        case SpO2: {
-
-          OxgenKangTai_Bluetooth_Utlis.getInstance().connect(remoteDevice, new GetOxgen<BaseDate.Wave>() {
-            @Override
-            public void getOxgen(final int spo2, final int pr) {
-              ((GetOxgen) bluetooth_satus).getOxgen(spo2, pr);
-            }
-
-            @Override
-            public void startDraw(BaseDate.Wave wave) {
-              ((GetOxgen) bluetooth_satus).startDraw(wave);
-            }
-
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-          });
-        }
-        break;
-        case POD: {
-          Oxgen_Bluetooth_Utlis.getInstance().connect(remoteDevice, new GetOxgen<BaseDate.Wave>() {
-            @Override
-            public void getOxgen(final int spo2, final int pr) {
-              ((GetOxgen) bluetooth_satus).getOxgen(spo2, pr);
-            }
-
-            @Override
-            public void startDraw(BaseDate.Wave wave) {
-              ((GetOxgen) bluetooth_satus).startDraw(wave);
-            }
-
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-          });
-        }
-        break;
-        case BC01: {
-          BC401_UricUtlis.getInstance().judgeconnect(remoteDevice, new GetUriDate<NewUIData>() {
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-
-            @Override
-            public void getBodyfat(final NewUIData uiData) {
-              ((GetUriDate) bluetooth_satus).getBodyfat(uiData);
-
-            }
-          });
-        }
-        break;
-        case CardioChek: {
-
-          BloodFat_KaDik_Utlis.getInstance().connect(remoteDevice, new GetBloodfat() {
-            @Override
-            public void getbloodfat(float chlo, float trig, float hdl, float ldl) {
-              ((GetBloodfat) bluetooth_satus).getbloodfat(chlo, trig, hdl, ldl);
-            }
-
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-          });
-        }
-        break;
-        case LPM311: {
-          BloodFat_LePuBluetooth_Utlis.getInstance().connect(remoteDevice, new GetBloodfat() {
-            @Override
-            public void getbloodfat(float chlo, float trig, float hdl, float ldl) {
-              ((GetBloodfat) bluetooth_satus).getbloodfat(chlo, trig, hdl, ldl);
-
-            }
-
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-          });
-        }
-        break;
-        case iGate: {
-          IGateUtis.getInstance().connect(remoteDevice, new GetBloodfat() {
-            @Override
-            public void getbloodfat(float chlo, float trig, float hdl, float ldl) {
-              ((GetBloodfat) bluetooth_satus).getbloodfat(chlo, trig, hdl, ldl);
-            }
-
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-          });
-        }
-        break;
-
-        case AlKAN: {
-          Sugar_OxygenUtlis.getInstance().connect(remoteDevice, new Getbloodsuar() {
-            @Override
-            public void getbloodsugar(float chlo) {
-              ((Getbloodsuar) bluetooth_satus).getbloodsugar(chlo);
-            }
-
-            @Override
-            public void succed() {
-              Statu(bluetooth_satus, Statu);
-            }
-
-            @Override
-            public void err() {
-              Statu(bluetooth_satus, 0);
-            }
-          });
-        }
-        break;
+        case OGM:
+          BloodsugarUtlis.getInstance().Connect(remoteDevice, (Getbloodsuar) date,bluetooth_satus);
+          break;
+        case Bioland_BPM:
+          Bloodpress_Bluetooth_Utlis.getInstance().Connect(remoteDevice, (Bloodpress_intenface<BloodpressDate>) date,bluetooth_satus);
+          break;
+        case Bioland_BGM:
+          Boodsugar_Bluetooth_Utlis.getInstance().Connect(remoteDevice, (Getbloodsuar) date,bluetooth_satus);
+          break;
+        case TD133:
+          Temp_Bluetooth_Utlis.getInstance().Connect(remoteDevice, (GetTemperature) date,bluetooth_satus);
+          break;
+        case Bioland_IT:
+          Templte_Bluetooth_Utlis.getInstance().Connect(remoteDevice, (GetTemperature) date,bluetooth_satus);
+          break;
+        case SpO2:
+          OxgenKangTai_Bluetooth_Utlis.getInstance().Connect(remoteDevice, (GetOxgen<BaseDate.Wave>) date,bluetooth_satus);
+          break;
+        case POD:
+          Oxgen_Bluetooth_Utlis.getInstance().Connect(remoteDevice, (GetOxgen<BaseDate.Wave>) date,bluetooth_satus);
+          break;
+        case BC01:
+          BC401_UricUtlis.getInstance().Connect(remoteDevice, (GetUriDate<NewUIData>) date,bluetooth_satus);
+          break;
+        case CardioChek:
+          BloodFat_KaDik_Utlis.getInstance().Connect(remoteDevice, (GetBloodfat) date,bluetooth_satus);
+          break;
+        case LPM311:
+          BloodFat_LePuBluetooth_Utlis.getInstance().Connect(remoteDevice, (GetBloodfat) date,bluetooth_satus);
+          break;
+        case iGate:
+          IGateUtis.getInstance().Connect(remoteDevice, (GetBloodfat) date,bluetooth_satus);
+          break;
+        case AlKAN:
+          Sugar_OxygenUtlis.getInstance().Connect(remoteDevice, (Getbloodsuar) date,bluetooth_satus);
+          break;
+        case Mr5:
+          ICDeviceUtlis.getInstance().Connect(remoteDevice, (GetIDcar) date,bluetooth_satus);
+          break;
+        case DH:
+          DingHen_W_Heigth_Bluetooth_Utlis.getInstance().Connect(remoteDevice, (GetH_Weight) date,bluetooth_satus);
+          break;
+        case iDR210:
+          ID300DeviceUtlis.getInstance().Connect(remoteDevice, (GetIDcar) date,bluetooth_satus);
+          break;
+        case Breath:
+          Breath_Home_DeviceUtlis.getInstance().Connect(remoteDevice, (GetBreath) date,bluetooth_satus);
+          break;
+        case Icomon:
+          Icomon_WaislineUtlis.getInstance().Connect(remoteDevice, (GetWaislin) date,bluetooth_satus);
+          break;
       }
 
     }
   }
 
-  private void Statu(Bluetooth_Satus bluetooth_satus, int errcode) {
-    if (errcode == Statu) {
-      succed = true;
-      bluetooth_satus.succed();
-    } else {
-      bluetooth_satus.err();
-    }
-  }
 
   /**
    * 重置设备
    */
   public void Restart() {
+    if (!IsRegister()) return;
     isStart = false;
     regiestBroast();
     if (mbluetoothAdapter.isEnabled()) {
@@ -539,11 +352,11 @@ public class BluetoothMangers {
     }
 
   }
-
   /**
    * 停止检测
    */
-  public void Stop() {
+  public void UnRegisterReceiver() {
+    if (!IsRegister()) return;
     StopScan();
     if (!TextUtils.isEmpty(mblutoothName)) {
       switch (mblutoothName) {
@@ -556,7 +369,7 @@ public class BluetoothMangers {
         case Bioland_BGM:
           Boodsugar_Bluetooth_Utlis.getInstance().UnRegisterReceiver();
           break;
-        case Bluetooth_BP:
+        case TD133:
           Temp_Bluetooth_Utlis.getInstance().UnRegisterReceiver();
           break;
         case Bioland_IT:
@@ -586,6 +399,18 @@ public class BluetoothMangers {
         case AlKAN:
           Sugar_OxygenUtlis.getInstance().UnRegisterReceiver();
           break;
+        case Mr5:
+          ICDeviceUtlis.getInstance().UnRegisterReceiver();
+          break;
+        case DH:
+          DingHen_W_Heigth_Bluetooth_Utlis.getInstance().UnRegisterReceiver();
+          break;
+        case iDR210:
+          ID300DeviceUtlis.getInstance().UnRegisterReceiver();
+          break;
+        case Breath:
+          Breath_Home_DeviceUtlis.getInstance().UnRegisterReceiver();
+          break;
 
       }
     }
@@ -596,9 +421,22 @@ public class BluetoothMangers {
    * @param searchtimeout  搜索蓝牙设备的超时时间
    * @param connecttimeout 连接设备的超时时间
    */
-  public void init(boolean isShow, long searchtimeout, long connecttimeout) {
-    LogUtils.debug = isShow;
+  public void init(Activity activity, boolean isShow, long searchtimeout, long connecttimeout) {
     Common.searchtimeout = searchtimeout;
     Common.connecttimeout = connecttimeout;
+    if (!IsRegister()) new RegisterActivity(activity).show();
+
   }
+  /**
+   * @param isShow         是否开启日志
+   * @param searchtimeout  搜索蓝牙设备的超时时间
+   * @param connecttimeout 连接设备的超时时间
+   */
+  public void init( boolean isShow, long searchtimeout, long connecttimeout) {
+    Common.searchtimeout = searchtimeout;
+    Common.connecttimeout = connecttimeout;
+
+  }
+
+
 }

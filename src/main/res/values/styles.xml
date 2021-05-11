@@ -1,0 +1,19 @@
+<resources>
+    <!--注册输入框-->
+    <style name="register_ed">
+        <item name="android:layout_width">178px</item>
+        <item name="android:gravity">center|fill_vertical</item>
+        <item name="android:maxLength">4</item>
+        <item name="android:digits">
+            0123456789QAZWSXEDCRFVTGBYHNUJMIKOLPqazwsxedcrfvtgbyhnujmiklop
+        </item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:layout_marginLeft">15px</item>
+        <item name="android:layout_height">64px</item>
+        <item name="android:background">@drawable/shape_edittblack</item>
+        <item name="android:textColor">@color/color_val_000000</item>
+        <item name="android:textSize">30px</item>
+    </style>
+
+</resources>

@@ -6,13 +6,13 @@ import com.creative.base.Ireader;
 import java.io.IOException;
 
 public class ReaderBLE implements Ireader {
-	
+
 	private BLEHelper mHelper;
 
 	public ReaderBLE(BLEHelper helper) {
 		mHelper = helper;
 	}
-	
+
 	@Override
 	public int read(byte[] buffer) throws IOException {
 		return mHelper.read(buffer);

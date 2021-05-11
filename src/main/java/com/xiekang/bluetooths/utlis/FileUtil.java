@@ -1,9 +1,7 @@
 package com.xiekang.bluetooths.utlis;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.net.Uri;
 import android.os.Environment;
 
 import org.json.JSONArray;
@@ -34,30 +32,7 @@ public class FileUtil {
 
 	private static File cacheDir;
 	private static File imageDir;
-	/**
-	 * 得到版本文件夹
-	 *
-	 * @return
-	 */
-	public static File getVersionDir(Context mcontext) {
-		return new File(getVersionPath(mcontext));
-	}
 
-	/**
-	 * 得到版本文件路径
-	 * @return
-	 */
-	public static String getVersionPath(Context mcontext) {
-		if (isSDCardExist()) {
-
-			return Environment.getExternalStorageDirectory() + ""
-					+ Common.APP_VERSION_DIR;
-
-		} else {
-			return mcontext.getCacheDir().getAbsolutePath()
-					+ "" + Common.APP_VERSION_DIR;
-		}
-	}
 
 	/**
 	 * 得到本地版本号
@@ -86,10 +61,10 @@ public class FileUtil {
 	public static String getSaveDir() {
 		if (Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
-			return Environment.getExternalStorageDirectory() + Common.APP_DIR;
+			return Environment.getExternalStorageDirectory() + Cotexts.getAppDir();
 		}
 		return Environment.getDataDirectory().getAbsolutePath()
-				+ Common.APP_DIR;
+				+ Cotexts.getAppDir();
 	}
 
 	/**

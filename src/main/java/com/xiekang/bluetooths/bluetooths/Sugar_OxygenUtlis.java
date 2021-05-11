@@ -8,7 +8,8 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.text.TextUtils;
 
-import com.xiekang.bluetooths.interfaces.GetTemperature;
+import com.xiekang.bluetooths.BluetoothDriver;
+import com.xiekang.bluetooths.interfaces.Bluetooth_Satus;
 import com.xiekang.bluetooths.interfaces.Getbloodsuar;
 import com.xiekang.bluetooths.utlis.ContextProvider;
 import com.xiekang.bluetooths.utlis.HexUtil;
@@ -29,11 +30,12 @@ import static com.xiekang.bluetooths.utlis.HexUtil.Bytes2HexString;
  * @修改时间 time
  * @修改备注 describe
  */
-public class Sugar_OxygenUtlis {
+public class Sugar_OxygenUtlis implements BluetoothDriver<Getbloodsuar> {
   private static Sugar_OxygenUtlis bloodpress_bluetooth_utlis;
   private BluetoothGatt bluetoothGatt;
   private BluetoothGattCharacteristic notifyCharacteristic;
   private Getbloodsuar getbloodsuar;
+  private Bluetooth_Satus satus;
   StringBuffer stringBuffer=new StringBuffer();
   public static String GATT_SERVICE_PRIMARY = "0003cdd1-0000-1000-8000-00805f9b0131";
   public static String CHARACTERISTIC_READAB  = "00002902-0000-1000-8000-00805f9b34fb";
@@ -49,9 +51,9 @@ public class Sugar_OxygenUtlis {
    *
    * @param
    */
-  public void connect(BluetoothDevice bluetoothDevice, Getbloodsuar bluetooth_satus) {
+  public void Connect(BluetoothDevice bluetoothDevice, Getbloodsuar bluetooth_satus, Bluetooth_Satus bluetoothSatus) {
     RegisterReceiver(bluetooth_satus);
-
+    this.satus=bluetoothSatus;
       bluetoothGatt = bluetoothDevice.connectGatt(ContextProvider.get().getContext(), false, gattCallback);
     if (bluetoothGatt==null)UnRegisterReceiver();
       LogUtils.e(bluetoothGatt);
@@ -67,6 +69,7 @@ public class Sugar_OxygenUtlis {
               //当连接成果以后，开启这个服务，就可以通信了
               bluetoothGatt.discoverServices();
               if (getbloodsuar!=null)getbloodsuar.succed();
+              if (satus!=null)satus.succed();
               break;
             case BluetoothGatt.STATE_CONNECTING:
               break;
@@ -116,7 +119,7 @@ public class Sugar_OxygenUtlis {
         int head=vlaue.indexOf("020D0A54696D653A");
         int last=vlaue.indexOf("0D0A030D0A");
         if (head>=0&&last>=0){
-         String hexsting= HexUtil.hexStringToString(vlaue.substring(head,last));
+          String hexsting= HexUtil.hexStringToString(vlaue.substring(head,last));
           LogUtils.e("解析数据"+ hexsting+"vlaue.substring(head,last)"+vlaue.substring(head,last));
           String oxgen=null;
           if (hexsting.contains("Hemoglobin:")){
@@ -124,7 +127,6 @@ public class Sugar_OxygenUtlis {
           }else {
             oxgen = hexsting.substring(hexsting.indexOf("Control:")+("Control:").length(), hexsting.indexOf("g/L"));
           }
-
          if (getbloodsuar!=null&& !TextUtils.isEmpty(oxgen))getbloodsuar.getbloodsugar(Float.parseFloat(oxgen));
           UnRegisterReceiver();
         }
@@ -162,6 +164,7 @@ public class Sugar_OxygenUtlis {
   public void UnRegisterReceiver() {
     stringBuffer.delete(0,stringBuffer.length());
     if (getbloodsuar!=null)getbloodsuar.err();
+    if (satus!=null)satus.err();
     if (bluetoothGatt != null) {
       bluetoothGatt.disconnect();
       bluetoothGatt.close();
