@@ -27,6 +27,8 @@
 #google推荐算法
 -optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*
 -keep class com.qingniu.scale.model.BleScaleData{*;}
+-keep class com.xiekang.bluetooths.bluetooths.BluetoothAdapterContext{*;}
+-keep class com.xiekang.bluetooths.utlis.ContextProvider{*;}
 -keep class com.xiekang.bluetooths.interfaces.* {*;}
 -keep class com.xiekang.bluetooths.bluetooths.oxgen.draw.* {*;}
 -keep class com.creative.base.*{*;}
@@ -35,5 +37,11 @@
       public <methods>;
       }
 -keep class com.xiekang.bluetooths.bluetooths.QNBleDeviceUtlis{
+      public <methods>;
+      }
+-keep class com.xiekang.bluetooths.bluetooths.Icomon_WaislineUtlis{
+      public <methods>;
+      }
+-keep class com.xiekang.bluetooths.bluetooths.breath_home.Breath_Home_DeviceUtlis{
       public <methods>;
       }
